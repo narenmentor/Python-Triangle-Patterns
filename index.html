@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Triangle Patterns – Beginner Guide</title>
+<style>
+  :root{
+    --sky-1:#e8f7ff; --sky-2:#b9e6fb; --sky-3:#5cc2f0; --sky-4:#1b9be0; --sky-5:#0b6bb0; --ink:#083b61;
+    --code-bg:#06263f; --code-fg:#e6f6ff; --cmt:#7fd0ff; --kw:#ffd166; --str:#9ff0b5; --num:#ff9fb0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--ink);line-height:1.6;
+    background:linear-gradient(180deg,var(--sky-2) 0%,var(--sky-1) 45%,#d4f0ff 100%) fixed;min-height:100vh}
+  header{position:relative;overflow:hidden;text-align:center;padding:56px 20px 64px;color:#fff;
+    background:linear-gradient(180deg,#7fd3ff 0%,var(--sky-4) 50%,var(--sky-5) 51%,#1480c9 100%);
+    border-bottom:4px solid #fff;box-shadow:0 8px 24px rgba(11,107,176,.35)}
+  header::before{content:"";position:absolute;left:-10%;top:0;width:120%;height:50%;
+    background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.08));border-radius:0 0 50% 50%/0 0 100% 100%}
+  header>*{position:relative}
+  h1{margin:0 0 8px;font-size:clamp(1.8rem,5vw,2.8rem);text-shadow:0 2px 4px rgba(6,60,100,.5)}
+  header p{margin:0 auto;max-width:560px;font-size:1.1rem;text-shadow:0 1px 3px rgba(6,60,100,.5)}
+  main{max-width:860px;margin:0 auto;padding:28px 16px 40px}
+  .tips{background:linear-gradient(180deg,#fff,var(--sky-1));border:2px solid #fff;border-radius:18px;
+    padding:18px 22px;margin-bottom:28px;box-shadow:0 6px 18px rgba(11,107,176,.25),inset 0 -3px 8px rgba(92,194,240,.3)}
+  .tips h2{margin:0 0 6px;font-size:1.2rem}
+  .tips ul{margin:0;padding-left:20px}
+  .card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#eaf8ff 100%);
+    border:2px solid #fff;border-radius:22px;padding:24px;margin-bottom:28px;
+    box-shadow:0 10px 26px rgba(11,107,176,.28),inset 0 -4px 10px rgba(92,194,240,.35)}
+  .card::before{content:"";position:absolute;left:0;right:0;top:0;height:46px;
+    background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0))}
+  .card>*{position:relative}
+  .badge{display:inline-block;color:#fff;font-weight:700;padding:5px 16px;border-radius:999px;font-size:.95rem;
+    background:linear-gradient(180deg,#8be0ff 0%,var(--sky-4) 50%,var(--sky-5) 51%,#1a8fd8 100%);
+    box-shadow:0 3px 8px rgba(11,107,176,.4),inset 0 1px 0 rgba(255,255,255,.8)}
+  .card h2{margin:10px 0 14px;font-size:1.5rem}
+  .label{display:flex;justify-content:space-between;align-items:center;margin:16px 0 6px;font-weight:700;color:var(--sky-5)}
+  pre{margin:0;padding:16px 18px;border-radius:14px;overflow-x:auto;font-family:Consolas,"Courier New",monospace;
+    font-size:.95rem;line-height:1.55;tab-size:4}
+  pre.code{background:linear-gradient(180deg,#0d3a5e,var(--code-bg));color:var(--code-fg);border:2px solid var(--sky-3);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.15)}
+  pre.out{background:#fff;color:var(--sky-5);border:2px dashed var(--sky-3);font-weight:700;font-size:1.1rem}
+  .c{color:var(--cmt)} .k{color:var(--kw)} .s{color:var(--str)} .n{color:var(--num)}
+  button.copy{cursor:pointer;border:0;color:#fff;font:inherit;font-size:.85rem;font-weight:700;padding:5px 14px;border-radius:999px;
+    background:linear-gradient(180deg,#8be0ff 0%,var(--sky-4) 50%,var(--sky-5) 51%,#1a8fd8 100%);
+    box-shadow:0 2px 6px rgba(11,107,176,.4),inset 0 1px 0 rgba(255,255,255,.8)}
+  button.copy:hover{filter:brightness(1.1)}
+  button.copy:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
+  .explain{background:rgba(185,230,251,.45);border-left:5px solid var(--sky-4);border-radius:10px;padding:12px 16px}
+  .explain p{margin:0 0 8px} .explain ul{margin:0;padding-left:20px}
+  code{background:#fff;border:1px solid var(--sky-3);border-radius:5px;padding:0 5px;font-family:Consolas,monospace}
+  footer{text-align:center;color:#fff;font-weight:700;font-size:1.1rem;padding:20px;letter-spacing:.3px;
+    background:linear-gradient(180deg,#7fd3ff 0%,var(--sky-4) 50%,var(--sky-5) 51%,#1480c9 100%);
+    border-top:4px solid #fff;text-shadow:0 1px 3px rgba(6,60,100,.6)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Python Triangle Patterns</h1>
+  <p>A beginner-friendly guide: learn loops by printing stars and numbers, one row at a time.</p>
+</header>
+
+<main>
+
+  <section class="tips">
+    <h2>Before you start</h2>
+    <ul>
+      <li><code>for</code> loops repeat code. Each repeat prints one row of the triangle.</li>
+      <li><code>"* " * 3</code> repeats the text, giving <code>* * * </code>.</li>
+      <li><code>print()</code> adds a new line after each call. <code>end=" "</code> keeps the next print on the same line.</li>
+      <li>Every example uses <code>rows = 5</code>. Change it to make a bigger or smaller triangle.</li>
+    </ul>
+  </section>
+
+  <!-- 1 -->
+  <article class="card">
+    <span class="badge">Pattern 1</span>
+    <h2>Right-Angled Triangle</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the triangle</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Loop i from 1 to 5 (range stops before rows + 1)</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, rows + <span class="n">1</span>):
+    <span class="c"># Print i stars; the space after * keeps them apart</span>
+    <span class="k">print</span>(<span class="s">"* "</span> * i)</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">*
+* *
+* * *
+* * * *
+* * * * *</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>Row number <code>i</code> prints exactly <code>i</code> stars, so the triangle grows by one star each row.</p>
+      <ul>
+        <li>Row 1 prints 1 star, row 2 prints 2 stars, and so on up to row 5.</li>
+        <li><code>range(1, rows + 1)</code> gives 1, 2, 3, 4, 5.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="card">
+    <span class="badge">Pattern 2</span>
+    <h2>Inverted Right-Angled Triangle</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the triangle</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Count down: start at 5, stop before 0, step -1</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(rows, <span class="n">0</span>, -<span class="n">1</span>):
+    <span class="c"># Print i stars, so the rows get shorter</span>
+    <span class="k">print</span>(<span class="s">"* "</span> * i)</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">* * * * *
+* * * *
+* * *
+* *
+*</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>The only change from Pattern 1 is the loop direction. The third value in <code>range()</code> is the step.</p>
+      <ul>
+        <li><code>range(5, 0, -1)</code> gives 5, 4, 3, 2, 1.</li>
+        <li>The first row has the most stars and the last row has just one.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="card">
+    <span class="badge">Pattern 3</span>
+    <h2>Number Triangle</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the triangle</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Outer loop: runs once for every row</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, rows + <span class="n">1</span>):
+    <span class="c"># Inner loop: counts from 1 up to the current row number</span>
+    <span class="k">for</span> j <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, i + <span class="n">1</span>):
+        <span class="c"># Print the number j and stay on the same line</span>
+        <span class="k">print</span>(j, end=<span class="s">" "</span>)
+    <span class="c"># Move to the next line after each row is done</span>
+    <span class="k">print</span>()</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">1
+1 2
+1 2 3
+1 2 3 4
+1 2 3 4 5</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>This is a nested loop: a loop inside a loop. The outer loop picks the row, and the inner loop fills that row.</p>
+      <ul>
+        <li>In row 3 (<code>i = 3</code>), the inner loop prints 1, 2, 3.</li>
+        <li><code>end=" "</code> stops <code>print</code> from jumping to a new line.</li>
+        <li>The empty <code>print()</code> ends the row.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="card">
+    <span class="badge">Pattern 4</span>
+    <h2>Pyramid (Centered Triangle)</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the pyramid</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Loop through each row from 1 to 5</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, rows + <span class="n">1</span>):
+    <span class="c"># Spaces first (fewer each row), then i stars</span>
+    <span class="k">print</span>(<span class="s">" "</span> * (rows - i) + <span class="s">"* "</span> * i)</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">    *
+   * *
+  * * *
+ * * * *
+* * * * *</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>A pyramid needs two parts on every line: leading spaces, then stars.</p>
+      <ul>
+        <li>Spaces = <code>rows - i</code>. Row 1 gets 4 spaces and row 5 gets 0.</li>
+        <li>Stars = <code>i</code>, the same as Pattern 1.</li>
+        <li><code>+</code> joins the spaces and stars into one string.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 5 -->
+  <article class="card">
+    <span class="badge">Pattern 5</span>
+    <h2>Right-Aligned Triangle</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the triangle</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Loop through each row from 1 to 5</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, rows + <span class="n">1</span>):
+    <span class="c"># Two spaces per missing star, then i stars</span>
+    <span class="k">print</span>(<span class="s">"  "</span> * (rows - i) + <span class="s">"* "</span> * i)</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">        *
+      * *
+    * * *
+  * * * *
+* * * * *</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>The star is drawn as <code>"* "</code>, which is 2 characters wide. To push a row to the right, each missing star must be replaced by 2 spaces.</p>
+      <ul>
+        <li>Row 1 needs 4 missing stars, so 8 spaces.</li>
+        <li>Compare with Pattern 4, which uses 1 space instead of 2.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="card">
+    <span class="badge">Pattern 6</span>
+    <h2>Inverted Pyramid</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the pyramid</span>
+rows = <span class="n">5</span>
+
+<span class="c"># Count down from 5 to 1</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(rows, <span class="n">0</span>, -<span class="n">1</span>):
+    <span class="c"># Spaces grow as stars shrink, keeping the shape centered</span>
+    <span class="k">print</span>(<span class="s">" "</span> * (rows - i) + <span class="s">"* "</span> * i)</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">* * * * *
+ * * * *
+  * * *
+   * *
+    *</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>This combines Pattern 2 (counting down) with Pattern 4 (spaces plus stars).</p>
+      <ul>
+        <li>When <code>i = 5</code>, there are 0 spaces and 5 stars.</li>
+        <li>When <code>i = 1</code>, there are 4 spaces and 1 star.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="card">
+    <span class="badge">Pattern 7</span>
+    <h2>Full Pyramid (Solid Stars)</h2>
+    <div class="label"><span>Code</span><button class="copy">Copy</button></div>
+<pre class="code"><span class="c"># Number of rows in the pyramid</span>
+number = <span class="n">7</span>
+
+<span class="c"># Loop through each row from 1 to 7</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, number + <span class="n">1</span>):
+    <span class="c"># Spaces first (number - i), then 2*i - 1 stars with no gaps</span>
+    <span class="k">print</span>(<span class="s">" "</span> * (number - i) + <span class="s">"*"</span> * (<span class="n">2</span> * i - <span class="n">1</span>))</pre>
+    <div class="label"><span>Output</span></div>
+<pre class="out">      *
+     ***
+    *****
+   *******
+  *********
+ ***********
+*************</pre>
+    <div class="label"><span>Explanation</span></div>
+    <div class="explain">
+      <p>This is the classic solid pyramid. Each row has leading spaces to center it, followed by an odd number of stars.</p>
+      <ul>
+        <li>Spaces = <code>number - i</code>. Row 1 gets 6 spaces and row 7 gets 0.</li>
+        <li>Stars = <code>2 * i - 1</code>, which gives 1, 3, 5, 7, 9, 11, 13. Each row is 2 stars wider than the one above.</li>
+        <li>Unlike Pattern 4, the stars have no space between them, so the pyramid looks solid.</li>
+      </ul>
+    </div>
+  </article>
+
+  <section class="tips">
+    <h2>Try it yourself</h2>
+    <ul>
+      <li>Change <code>rows = 5</code> to <code>rows = 8</code> and run each pattern again.</li>
+      <li>Replace <code>"* "</code> with <code>"# "</code> or <code>"$ "</code>.</li>
+      <li>Run the code in Google Colab, IDLE, or any Python editor.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>Entri Coding Tamil</footer>
+
+<script>
+  // Copy button: copies the code block that sits right after its label row
+  document.querySelectorAll('button.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.closest('.label').nextElementSibling.innerText;
+      var done = function () { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) { navigator.clipboard.writeText(code).then(done); }
+    });
+  });
+</script>
+</body>
+</html>
